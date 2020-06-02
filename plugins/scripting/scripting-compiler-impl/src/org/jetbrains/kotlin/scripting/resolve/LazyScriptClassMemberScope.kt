@@ -82,6 +82,14 @@ class LazyScriptClassMemberScope(
         return constructor
     }
 
+    override fun getVariableNames(): MutableSet<Name> {
+        return super.getVariableNames().apply {
+            scriptDescriptor.resultFieldName()?.let {
+                add(Name.identifier(it))
+            }
+        }
+    }
+
     override fun getNonDeclaredProperties(name: Name, result: MutableSet<PropertyDescriptor>) {
         super.getNonDeclaredProperties(name, result)
         if (scriptDescriptor.resultFieldName() == name.asString()) {
